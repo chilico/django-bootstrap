@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:14.0-alpine
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=django
+      - POSTGRES_PASSWORD=django
+      - POSTGRES_DB=django
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U django"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  django_web:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: django_web
+    ports:
+      - "${PORT:-8080}:8080"
+    environment:
+      - BASE_URL=https://localhost:8080
+      - DATABASE_URL=postgresql://django:django@db:5432/django
+      - POSTGRES_NAME=django
+      - POSTGRES_USER=django
+      - POSTGRES_PASSWORD=django
+      - POSTGRES_HOST=db
+      - POSTGRES_PORT=5432
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app
+      # - ./certs:/certs
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
+
+networks:
+  default:
+    driver: bridge
