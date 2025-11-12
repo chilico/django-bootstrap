@@ -2,7 +2,7 @@
 
 This is a Django repo for bootstrapping, running the ASGI server.
 
-It may act as a template to get a dockerised backend setup quickly.
+It may act as a template to get a dockerised async Django backend setup quickly.
 
 ### Setup & start
 
