@@ -25,4 +25,9 @@ echo "Collecting static files..."
 python manage.py collectstatic --noinput --clear
 
 echo "Starting Django App with Uvicorn (ASGI)..."
-uvicorn ${PROJECT_NAME}.asgi:application --host 0.0.0.0 --port $PORT --workers $WORKERS
+if [ "$RELOAD" = "true" ]; then
+  echo "Running with reload enabled..."
+  uvicorn ${PROJECT_NAME}.asgi:application --host 0.0.0.0 --port $PORT --reload
+else
+  uvicorn ${PROJECT_NAME}.asgi:application --host 0.0.0.0 --port $PORT --workers $WORKERS
+fi

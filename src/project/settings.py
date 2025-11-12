@@ -2,9 +2,11 @@ import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = os.environ.get("SECRET_KEY", "your-secret-key-change-in-production")
-DEBUG = os.environ.get("DEBUG", "False") == "True"
+SECRET_KEY = os.environ.get("SECRET_KEY", "your-secret-key")
+DEBUG = os.environ.get("DEBUG", "false").lower() == "true"
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+
+PROJECT = os.environ.get("DJANGO_PROJECT_NAME", "project")
 
 # app definition
 INSTALLED_APPS = [
@@ -14,6 +16,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "rest_framework",
+    "api",
 ]
 
 MIDDLEWARE = [
@@ -27,7 +31,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "project.urls"
+ROOT_URLCONF = f"{PROJECT}.urls"
 
 TEMPLATES = [
     {
@@ -46,7 +50,7 @@ TEMPLATES = [
 ]
 
 # ASGI application
-ASGI_APPLICATION = "project.asgi.application"
+ASGI_APPLICATION = f"{PROJECT}.asgi.application"
 
 # database
 DATABASES = {
@@ -67,16 +71,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_valprojecttion.UserAttributeSimilarityValprojecttor",
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_valprojecttion.MinimumLengthValprojecttor",
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_valprojecttion.CommonPasswordValprojecttor",
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        "NAME": "django.contrib.auth.password_valprojecttion.NumericPasswordValprojecttor",
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -90,6 +94,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+REST_FRAMEWORK = {
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",  # allows HTML browsing in dev
+    ],
+    "DEFAULT_PARSER_CLASSES": [
+        "rest_framework.parsers.JSONParser",
+    ],
+}
 
 # import at the end to ensure all settings are loaded first
 from project.logging import configure as configure_logging
