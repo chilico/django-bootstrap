@@ -17,23 +17,6 @@ services:
       timeout: 5s
       retries: 5
 
-  django_db_test:
-    container_name: django_db_test
-    image: postgres:14.0-alpine
-    restart: always
-    volumes:
-      - postgres_test_data:/var/lib/postgresql/data/
-    ports:
-      - "5433:5432"
-    environment:
-      - POSTGRES_USER=django_test
-      - POSTGRES_PASSWORD=django_test
-      - POSTGRES_DB=django_test
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U django_test"]
-      interval: 5s
-      timeout: 5s
-
   django_web:
     container_name: django_web
     build:
@@ -42,7 +25,6 @@ services:
     ports:
       - "${PORT:-8080}:8080"
     environment:
-      - DJANGO_PROJECT_NAME=project # set this as your project name ONCE only
       - WORKERS=1
       - BASE_URL=https://localhost:8080
       - DATABASE_URL=postgresql://django:django@django_db:5432/django
@@ -57,8 +39,6 @@ services:
       - ./src:/app
     depends_on:
       django_db:
-        condition: service_healthy
-      django_db_test:
         condition: service_healthy
 
 volumes:

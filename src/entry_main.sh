@@ -14,18 +14,16 @@ echo "PostgreSQL is ready"
 
 # create project if missing / first initialisation
 if [ ! -f "$PROJECT_NAME/settings.py" ]; then
-  echo "No Django project found. Creating '$PROJECT_NAME'..."
+  echo "No Django project found. Creating '$PROJECT_NAME' ..."
   django-admin startproject $PROJECT_NAME .
 fi
 
 echo "Running Migrations..."
 python manage.py migrate --noinput
 
-echo "Collecting static files..."
-python manage.py collectstatic --noinput --clear
-
 echo "Starting Django App with Uvicorn (ASGI)..."
 if [ "$RELOAD" = "true" ]; then
+  # running dev, so only need one worker
   echo "Running with reload enabled..."
   uvicorn ${PROJECT_NAME}.asgi:application --host 0.0.0.0 --port $PORT --reload
 else
