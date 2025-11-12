@@ -17,9 +17,9 @@ pydantic = "*"
 pytest = "*"
 pytest-asyncio = "*"
 pytest-django = "*"
+pytest-env = "*"
 uvicorn = "*"
 whitenoise = "*"
-pytest-env = "*"
 
 [dev-packages]
 
