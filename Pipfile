@@ -4,19 +4,22 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-django = "*"
-psycopg2-binary = "*"
-psycopg = "*"
-uvicorn = "*"
-whitenoise = "*"
-httpx = "*"
+adrf = "*"
+asyncio = "*"
 aiofiles = "*"
+django = "*"
+djangorestframework = "*"
+httpx = "*"
+loguru = "*"
+psycopg = "*"
+psycopg2-binary = "*"
 pydantic = "*"
 pytest = "*"
-loguru = "*"
-asyncio = "*"
-djangorestframework = "*"
-adrf = "*"
+pytest-asyncio = "*"
+pytest-django = "*"
+uvicorn = "*"
+whitenoise = "*"
+pytest-env = "*"
 
 [dev-packages]
 
