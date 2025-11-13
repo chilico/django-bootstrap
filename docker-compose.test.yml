@@ -18,11 +18,10 @@ services:
       dockerfile: Dockerfile
       context: .
     environment:
-      - DJANGO_PROJECT_NAME=project
+      - POSTGRES_HOST=django_db_test
       - POSTGRES_NAME=django_test
       - POSTGRES_USER=django_test
       - POSTGRES_PASSWORD=django_test
-      - POSTGRES_HOST=django_db_test
       - POSTGRES_PORT=5432
       - FORCE_COLOR=1
     env_file:
